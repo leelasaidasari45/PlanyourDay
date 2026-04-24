@@ -89,6 +89,7 @@ export default function Dashboard({ selectedDate, user }) {
       <div className="glass-card" style={{ padding: '24px 28px' }}>
         <TaskList
           displayDate={`${label} · ${formatted}`}
+          date={selectedDate}
           taskData={taskData}
         />
       </div>

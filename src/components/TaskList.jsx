@@ -6,7 +6,7 @@ import ProgressBar from './ProgressBar';
 import SubjectFilter from './SubjectFilter';
 import AddTaskModal from './AddTaskModal';
 
-export default function TaskList({ displayDate, taskData }) {
+export default function TaskList({ displayDate, date, taskData }) {
   // Destructure everything from the shared hook instance passed down from Dashboard
   const {
     tasks,
@@ -81,16 +81,22 @@ export default function TaskList({ displayDate, taskData }) {
       {error && <div className="auth-error">⚠️ {error}</div>}
 
       {/* Empty state */}
-      {!loading && !error && tasks.length === 0 && (
-        <div className="empty-state glass-card">
-          <span className="empty-icon">📝</span>
-          <strong style={{ color: 'var(--text-secondary)' }}>No tasks yet for this day</strong>
-          <p>Click "Add Task" to plan your day!</p>
-          <button className="btn btn-primary" style={{ marginTop: 8 }} onClick={() => setShowModal(true)}>
-            ＋ Add Your First Task
-          </button>
-        </div>
-      )}
+      {!loading && !error && tasks.length === 0 && (() => {
+        const today = new Date().toISOString().split('T')[0];
+        const isPast = date < today;
+        return (
+          <div className="empty-state glass-card">
+            <span className="empty-icon">{isPast ? '📅' : '📝'}</span>
+            <strong style={{ color: 'var(--text-secondary)' }}>
+              {isPast ? 'No tasks recorded for this day' : 'No tasks yet for this day'}
+            </strong>
+            <p>{isPast ? 'You didn\'t log any tasks for this date.' : 'Click "Add Task" to plan your day!'}</p>
+            <button className="btn btn-primary" style={{ marginTop: 8 }} onClick={() => setShowModal(true)}>
+              ＋ {isPast ? 'Log Task Retroactively' : 'Add Your First Task'}
+            </button>
+          </div>
+        );
+      })()}
 
       {/* Pending tasks */}
       {!loading && pending.length > 0 && (
