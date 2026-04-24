@@ -6,6 +6,7 @@ export default function AuthPage() {
   const [tab, setTab] = useState('signin'); // 'signin' | 'signup'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -19,6 +20,11 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError(error.message);
     } else {
+      if (password !== confirmPassword) {
+        setError('Passwords do not match');
+        setLoading(false);
+        return;
+      }
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) setError(error.message);
       else setSuccess('Account created! Check your email to confirm, then sign in.');
@@ -77,6 +83,22 @@ export default function AuthPage() {
               autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
             />
           </div>
+
+          {tab === 'signup' && (
+            <div className="form-group">
+              <label className="form-label">Confirm Password</label>
+              <input
+                className="input"
+                type="password"
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+                autoComplete="new-password"
+              />
+            </div>
+          )}
 
           <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: '100%', justifyContent: 'center', padding: '13px' }}>
             {loading ? (
