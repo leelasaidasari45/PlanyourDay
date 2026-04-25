@@ -21,12 +21,12 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
   };
 
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     setToggling(true);
     try {
-      await onCompleteWithProof(task.id, file);
+      await onCompleteWithProof(task.id, Array.from(files));
     } catch (err) {
       alert('Upload failed: ' + err.message);
     } finally {
@@ -49,12 +49,13 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
   return (
     <>
       <div className={`task-card ${task.completed ? 'completed' : ''}`}>
-        {/* Hidden File Input */}
+        {/* Hidden File Input (Multiple) */}
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: 'none' }}
           accept="image/*,application/pdf"
+          multiple
           onChange={handleFileChange}
         />
 
@@ -62,16 +63,10 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
         <div className="task-body">
           <div className="task-meta">
             <SubjectBadge subject={task.subject} />
-            {task.proof_url && (
-              <a 
-                href={task.proof_url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="proof-link"
-                title="View proof"
-              >
-                🖼️ View Proof
-              </a>
+            {task.proof_urls && task.proof_urls.length > 0 && (
+              <span className="proof-count">
+                🖼️ {task.proof_urls.length} Proof{task.proof_urls.length > 1 ? 's' : ''}
+              </span>
             )}
           </div>
           <div className="task-title" style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
@@ -79,13 +74,29 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
           </div>
           {task.notes && <div className="task-notes">📝 {task.notes}</div>}
           
-          {/* Inline Image Preview if it's an image */}
-          {task.proof_url && (task.proof_url.match(/\.(jpeg|jpg|gif|png)$/) || task.proof_url.includes('image')) && (
-            <div className="proof-preview">
-              <img src={task.proof_url} alt="Proof" onClick={() => window.open(task.proof_url, '_blank')} />
+          {/* Multiple Proof Previews */}
+          {task.proof_urls && task.proof_urls.length > 0 && (
+            <div className="proof-gallery">
+              {task.proof_urls.map((url, idx) => {
+                const isImg = url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.includes('image');
+                return (
+                  <div key={idx} className="proof-item">
+                    {isImg ? (
+                      <div className="proof-preview">
+                        <img src={url} alt={`Proof ${idx + 1}`} onClick={() => window.open(url, '_blank')} />
+                      </div>
+                    ) : (
+                      <a href={url} target="_blank" rel="noopener noreferrer" className="proof-link">
+                        📄 Doc {idx + 1}
+                      </a>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
+
 
         {/* Actions */}
         <div className="task-actions">

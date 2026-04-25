@@ -71,7 +71,7 @@ export function useTasks(date) {
   // Toggle completion (simple toggle or clear proof)
   const toggleTask = async (id, completed) => {
     const updates = { completed: !completed };
-    if (completed) updates.proof_url = null; // Clear proof if unmarking as complete
+    if (completed) updates.proof_urls = null; // Clear all proofs if unmarking as complete
 
     const { error } = await supabase
       .from('tasks')
@@ -81,38 +81,48 @@ export function useTasks(date) {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
   };
 
-  // Complete with proof upload
-  const completeWithProof = async (id, file) => {
+  // Complete with multiple proof uploads
+  const completeWithProof = async (id, files) => {
     const { data: { user } } = await supabase.auth.getUser();
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}/${id}-${Date.now()}.${fileExt}`;
-    const filePath = `proofs/${fileName}`;
+    const uploadedUrls = [];
 
-    // 1. Upload to Storage
-    const { error: uploadError } = await supabase.storage
-      .from('proofs')
-      .upload(filePath, file);
+    // 1. Loop through all selected files
+    for (const file of files) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${id}-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `proofs/${fileName}`;
 
-    if (uploadError) throw uploadError;
+      // Upload to Storage
+      const { error: uploadError } = await supabase.storage
+        .from('proofs')
+        .upload(filePath, file);
 
-    // 2. Get Public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('proofs')
-      .getPublicUrl(filePath);
+      if (uploadError) continue; // Skip if one fails, or handle error
 
-    // 3. Update Task
+      // Get Public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('proofs')
+        .getPublicUrl(filePath);
+      
+      uploadedUrls.push(publicUrl);
+    }
+
+    if (uploadedUrls.length === 0) return;
+
+    // 2. Update Task with the array of URLs
     const { error: updateError } = await supabase
       .from('tasks')
       .update({
         completed: true,
-        proof_url: publicUrl
+        proof_urls: uploadedUrls // Store as array
       })
       .eq('id', id);
 
     if (updateError) throw updateError;
 
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: true, proof_url: publicUrl } : t));
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: true, proof_urls: uploadedUrls } : t));
   };
+
 
 
   // Update a task
