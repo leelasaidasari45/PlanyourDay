@@ -74,28 +74,37 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
           </div>
           {task.notes && <div className="task-notes">📝 {task.notes}</div>}
           
-          {/* Multiple Proof Previews */}
-          {task.proof_urls && task.proof_urls.length > 0 && (
-            <div className="proof-gallery">
-              {task.proof_urls.map((url, idx) => {
-                const isImg = url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.includes('image');
-                return (
-                  <div key={idx} className="proof-item">
-                    {isImg ? (
-                      <div className="proof-preview">
-                        <img src={url} alt={`Proof ${idx + 1}`} onClick={() => window.open(url, '_blank')} />
-                      </div>
-                    ) : (
-                      <a href={url} target="_blank" rel="noopener noreferrer" className="proof-link">
-                        📄 Doc {idx + 1}
-                      </a>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          {/* Multiple Proof Previews (Handles both array and single string for compatibility) */}
+          {(() => {
+            const urls = Array.isArray(task.proof_urls) 
+              ? task.proof_urls 
+              : (task.proof_urls ? [task.proof_urls] : []);
+            
+            if (urls.length === 0) return null;
+
+            return (
+              <div className="proof-gallery">
+                {urls.map((url, idx) => {
+                  const isImg = typeof url === 'string' && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.includes('image'));
+                  return (
+                    <div key={idx} className="proof-item">
+                      {isImg ? (
+                        <div className="proof-preview">
+                          <img src={url} alt={`Proof ${idx + 1}`} onClick={() => window.open(url, '_blank')} />
+                        </div>
+                      ) : (
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="proof-link">
+                          📄 Doc {idx + 1}
+                        </a>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
+
 
 
         {/* Actions */}
