@@ -14,6 +14,7 @@ export default function TaskList({ displayDate, date, taskData }) {
     error,
     addTask,
     toggleTask,
+    completeWithProof,
     updateTask,
     deleteTask,
     completedCount,
