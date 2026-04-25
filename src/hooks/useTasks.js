@@ -68,15 +68,52 @@ export function useTasks(date) {
   };
 
 
-  // Toggle completion
+  // Toggle completion (simple toggle or clear proof)
   const toggleTask = async (id, completed) => {
+    const updates = { completed: !completed };
+    if (completed) updates.proof_url = null; // Clear proof if unmarking as complete
+
     const { error } = await supabase
       .from('tasks')
-      .update({ completed: !completed })
+      .update(updates)
       .eq('id', id);
     if (error) throw error;
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !completed } : t));
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
   };
+
+  // Complete with proof upload
+  const completeWithProof = async (id, file) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}/${id}-${Date.now()}.${fileExt}`;
+    const filePath = `proofs/${fileName}`;
+
+    // 1. Upload to Storage
+    const { error: uploadError } = await supabase.storage
+      .from('proofs')
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    // 2. Get Public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('proofs')
+      .getPublicUrl(filePath);
+
+    // 3. Update Task
+    const { error: updateError } = await supabase
+      .from('tasks')
+      .update({
+        completed: true,
+        proof_url: publicUrl
+      })
+      .eq('id', id);
+
+    if (updateError) throw updateError;
+
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: true, proof_url: publicUrl } : t));
+  };
+
 
   // Update a task
   const updateTask = async (id, updates) => {
@@ -102,5 +139,5 @@ export function useTasks(date) {
   const totalCount = tasks.length;
   const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  return { tasks, loading, error, addTask, toggleTask, updateTask, deleteTask, completedCount, totalCount, percentage, refetch: fetchTasks };
+  return { tasks, loading, error, addTask, toggleTask, completeWithProof, updateTask, deleteTask, completedCount, totalCount, percentage, refetch: fetchTasks };
 }

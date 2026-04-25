@@ -110,6 +110,7 @@ export default function TaskList({ displayDate, date, taskData }) {
                 key={task.id}
                 task={task}
                 onToggle={toggleTask}
+                onCompleteWithProof={completeWithProof}
                 onDelete={deleteTask}
                 onUpdate={updateTask}
               />
@@ -130,6 +131,7 @@ export default function TaskList({ displayDate, date, taskData }) {
                 key={task.id}
                 task={task}
                 onToggle={toggleTask}
+                onCompleteWithProof={completeWithProof}
                 onDelete={deleteTask}
                 onUpdate={updateTask}
               />

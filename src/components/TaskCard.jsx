@@ -1,17 +1,38 @@
-// TaskCard.jsx — Individual task row with complete button, edit, and delete
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SubjectBadge } from './SubjectFilter';
 import AddTaskModal from './AddTaskModal';
 
-export default function TaskCard({ task, onToggle, onDelete, onUpdate }) {
+export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete, onUpdate }) {
   const [showEdit, setShowEdit] = useState(false);
   const [toggling, setToggling] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleToggle = async () => {
+    if (!task.completed) {
+      // If marking as complete, trigger file upload
+      fileInputRef.current.click();
+    } else {
+      // If unmarking, just toggle (this will clear the proof in the hook)
+      setToggling(true);
+      try { await onToggle(task.id, task.completed); }
+      finally { setToggling(false); }
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
     setToggling(true);
-    try { await onToggle(task.id, task.completed); }
-    finally { setToggling(false); }
+    try {
+      await onCompleteWithProof(task.id, file);
+    } catch (err) {
+      alert('Upload failed: ' + err.message);
+    } finally {
+      setToggling(false);
+      e.target.value = ''; // Reset input
+    }
   };
 
   const handleDelete = async () => {
@@ -28,15 +49,42 @@ export default function TaskCard({ task, onToggle, onDelete, onUpdate }) {
   return (
     <>
       <div className={`task-card ${task.completed ? 'completed' : ''}`}>
+        {/* Hidden File Input */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          accept="image/*,application/pdf"
+          onChange={handleFileChange}
+        />
+
         {/* Body */}
         <div className="task-body">
           <div className="task-meta">
             <SubjectBadge subject={task.subject} />
+            {task.proof_url && (
+              <a 
+                href={task.proof_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="proof-link"
+                title="View proof"
+              >
+                🖼️ View Proof
+              </a>
+            )}
           </div>
           <div className="task-title" style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
             {task.title}
           </div>
           {task.notes && <div className="task-notes">📝 {task.notes}</div>}
+          
+          {/* Inline Image Preview if it's an image */}
+          {task.proof_url && (task.proof_url.match(/\.(jpeg|jpg|gif|png)$/) || task.proof_url.includes('image')) && (
+            <div className="proof-preview">
+              <img src={task.proof_url} alt="Proof" onClick={() => window.open(task.proof_url, '_blank')} />
+            </div>
+          )}
         </div>
 
         {/* Actions */}
@@ -46,7 +94,7 @@ export default function TaskCard({ task, onToggle, onDelete, onUpdate }) {
             className={`btn btn-sm complete-btn ${task.completed ? 'complete-btn--done' : 'complete-btn--pending'}`}
             onClick={handleToggle}
             disabled={toggling}
-            title={task.completed ? 'Mark as pending' : 'Mark as completed'}
+            title={task.completed ? 'Mark as pending' : 'Mark as completed (requires proof)'}
           >
             {toggling
               ? '…'
@@ -88,3 +136,4 @@ export default function TaskCard({ task, onToggle, onDelete, onUpdate }) {
     </>
   );
 }
+
