@@ -766,8 +766,8 @@ select.input option {
 .auth-wrapper {
   display: flex;
   width: 100%;
-  max-width: 1000px;
-  min-height: 600px;
+  max-width: 850px;
+  min-height: 540px;
   overflow: hidden;
   padding: 0;
   border-radius: 24px;
@@ -775,9 +775,9 @@ select.input option {
 
 /* Hero Side */
 .auth-hero {
-  flex: 1.1;
+  flex: 1;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  padding: 48px;
+  padding: 36px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -785,6 +785,7 @@ select.input option {
   position: relative;
   overflow: hidden;
 }
+
 
 .auth-hero::before {
   content: '';
@@ -815,7 +816,7 @@ select.input option {
 }
 
 .auth-hero h1 {
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   line-height: 1.1;
   margin-bottom: 20px;
   font-weight: 800;
@@ -829,14 +830,14 @@ select.input option {
 }
 
 .auth-hero p {
-  font-size: 1.05rem;
+  font-size: 1rem;
   opacity: 0.9;
   line-height: 1.6;
   max-width: 380px;
 }
 
 .auth-features {
-  margin-top: 40px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -847,12 +848,12 @@ select.input option {
   align-items: center;
   gap: 12px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .feature-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: rgba(255,255,255,0.2);
   display: flex;
   align-items: center;
@@ -877,10 +878,11 @@ select.input option {
 .auth-form-side {
   flex: 1;
   background: var(--bg-card);
-  padding: 48px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
 }
+
 
 .auth-form-header {
   margin-bottom: 32px;
