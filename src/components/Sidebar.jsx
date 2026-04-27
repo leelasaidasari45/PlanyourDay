@@ -30,7 +30,7 @@ export default function Sidebar({ selectedDate, onDateChange, isOpen, onClose, t
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <h1>📅 easyPLANER</h1>
+          <h1>📅 easyPLANNER</h1>
           <span>Daily Productivity Tracker</span>
         </div>
 
