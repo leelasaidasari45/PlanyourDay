@@ -103,6 +103,7 @@ export default function AuthPage() {
               <label className="form-label">Password</label>
               <div className="input-with-action">
                 <input
+                  key={tab === 'signin' ? 'signin-pw' : 'signup-pw'}
                   className="input"
                   type={showPassword ? 'text' : 'password'}
                   placeholder={tab === 'signup' ? 'Min. 6 characters' : 'Your password'}
@@ -111,6 +112,7 @@ export default function AuthPage() {
                   required
                   minLength={6}
                   autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
+                  name={tab === 'signin' ? 'password' : 'new-password'}
                 />
                 <button 
                   type="button" 
@@ -128,6 +130,7 @@ export default function AuthPage() {
                 <label className="form-label">Confirm Password</label>
                 <div className="input-with-action">
                   <input
+                    key="signup-confirm-pw"
                     className="input"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Confirm your password"
@@ -136,6 +139,7 @@ export default function AuthPage() {
                     required
                     minLength={6}
                     autoComplete="new-password"
+                    name="confirm-password"
                   />
                   <button 
                     type="button" 
@@ -148,6 +152,7 @@ export default function AuthPage() {
                 </div>
               </div>
             )}
+
 
 
             <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: '100%', marginTop: 10 }}>
