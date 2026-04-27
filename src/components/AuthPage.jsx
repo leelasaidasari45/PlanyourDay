@@ -137,9 +137,18 @@ export default function AuthPage() {
                     minLength={6}
                     autoComplete="new-password"
                   />
+                  <button 
+                    type="button" 
+                    className="input-action-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? '🙈' : '👁️'}
+                  </button>
                 </div>
               </div>
             )}
+
 
             <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: '100%', marginTop: 10 }}>
               {loading ? (
