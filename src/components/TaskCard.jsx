@@ -1,37 +1,23 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { SubjectBadge } from './SubjectFilter';
 import AddTaskModal from './AddTaskModal';
+import CompleteTaskModal from './CompleteTaskModal';
 
 export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete, onUpdate }) {
   const [showEdit, setShowEdit] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [toggling, setToggling] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const fileInputRef = useRef(null);
 
-  const handleToggle = async () => {
+  const handleToggleClick = async () => {
     if (!task.completed) {
-      // If marking as complete, trigger file upload
-      fileInputRef.current.click();
+      // Open modal to add proofs first
+      setShowCompleteModal(true);
     } else {
-      // If unmarking, just toggle (this will clear the proof in the hook)
+      // If unmarking, just toggle
       setToggling(true);
       try { await onToggle(task.id, task.completed); }
       finally { setToggling(false); }
-    }
-  };
-
-  const handleFileChange = async (e) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    setToggling(true);
-    try {
-      await onCompleteWithProof(task.id, Array.from(files));
-    } catch (err) {
-      alert('Upload failed: ' + err.message);
-    } finally {
-      setToggling(false);
-      e.target.value = ''; // Reset input
     }
   };
 
@@ -49,16 +35,6 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
   return (
     <>
       <div className={`task-card ${task.completed ? 'completed' : ''}`}>
-        {/* Hidden File Input (Multiple) */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          accept="image/*,application/pdf"
-          multiple
-          onChange={handleFileChange}
-        />
-
         {/* Body */}
         <div className="task-body">
           <div className="task-meta">
@@ -105,14 +81,12 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
           })()}
         </div>
 
-
-
         {/* Actions */}
         <div className="task-actions">
           {/* ── Complete / Undo button ── */}
           <button
             className={`btn btn-sm complete-btn ${task.completed ? 'complete-btn--done' : 'complete-btn--pending'}`}
-            onClick={handleToggle}
+            onClick={handleToggleClick}
             disabled={toggling}
             title={task.completed ? 'Mark as pending' : 'Mark as completed (requires proof)'}
           >
@@ -153,7 +127,14 @@ export default function TaskCard({ task, onToggle, onCompleteWithProof, onDelete
           onSave={handleUpdate}
         />
       )}
+
+      {showCompleteModal && (
+        <CompleteTaskModal
+          task={task}
+          onClose={() => setShowCompleteModal(false)}
+          onComplete={onCompleteWithProof}
+        />
+      )}
     </>
   );
 }
-
