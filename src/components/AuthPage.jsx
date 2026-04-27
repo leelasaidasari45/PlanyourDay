@@ -38,7 +38,7 @@ export default function AuthPage() {
         {/* Logo */}
         <div className="auth-logo">
           <div style={{ fontSize: '2.5rem', marginBottom: 8 }}>📅</div>
-          <h1>PlanYouDay</h1>
+          <h1>easyPLANER</h1>
           <p>Your daily productivity companion</p>
         </div>
 
