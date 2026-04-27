@@ -1,7 +1,7 @@
 // AddTaskModal.jsx — Modal for adding and editing tasks
 import { useState, useEffect } from 'react';
 
-const SUBJECTS = ['Python', 'JavaScript', 'React', 'TypeScript', 'CSS', 'HTML', 'Node', 'SQL', 'Other'];
+const SUBJECTS = ['DSA', 'Python', 'JavaScript', 'React', 'TypeScript', 'CSS', 'HTML', 'Node', 'SQL', 'Other'];
 
 export default function AddTaskModal({ onClose, onSave, editTask = null }) {
   const [title, setTitle] = useState('');
