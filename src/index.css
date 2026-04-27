@@ -1067,3 +1067,35 @@ select.input option {
   color: var(--danger);
 }
 
+/* ── Input with Action (Show/Hide Password) ── */
+.input-with-action {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-action .input {
+  padding-right: 45px; /* Space for the button */
+}
+
+.input-action-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  color: var(--text-primary);
+}
+
+.input-action-btn:hover {
+  opacity: 1;
+}
+
+

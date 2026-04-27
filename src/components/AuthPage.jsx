@@ -11,6 +11,8 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); setSuccess('');
@@ -72,31 +74,43 @@ export default function AuthPage() {
 
           <div className="form-group">
             <label className="form-label">Password</label>
-            <input
-              className="input"
-              type="password"
-              placeholder={tab === 'signup' ? 'Min. 6 characters' : 'Your password'}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              minLength={6}
-              autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
-            />
+            <div className="input-with-action">
+              <input
+                className="input"
+                type={showPassword ? 'text' : 'password'}
+                placeholder={tab === 'signup' ? 'Min. 6 characters' : 'Your password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                minLength={6}
+                autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
+              />
+              <button 
+                type="button" 
+                className="input-action-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex="-1"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+            </div>
           </div>
 
           {tab === 'signup' && (
             <div className="form-group">
               <label className="form-label">Confirm Password</label>
-              <input
-                className="input"
-                type="password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
-                minLength={6}
-                autoComplete="new-password"
-              />
+              <div className="input-with-action">
+                <input
+                  className="input"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  autoComplete="new-password"
+                />
+              </div>
             </div>
           )}
 
