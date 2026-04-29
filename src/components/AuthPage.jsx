@@ -13,6 +13,23 @@ export default function AuthPage() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const validateEmail = (email) => {
+    const [localPart] = email.split('@');
+    if (!localPart) return false;
+
+    // 1. Block very short local parts (e.g., x@gmail.com)
+    if (localPart.length < 3) return false;
+
+    // 2. Block repeating characters (e.g., xxx@, aaaa@)
+    if (/^(.)\1+$/.test(localPart)) return false;
+
+    // 3. Block common fake patterns
+    const fakes = ['test', 'abc', '123', 'qwerty', 'admin', 'user', 'example'];
+    if (fakes.some(f => localPart.toLowerCase().startsWith(f))) return false;
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); setSuccess('');
@@ -22,6 +39,13 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError(error.message);
     } else {
+      // Basic Fake Email Prevention
+      if (!validateEmail(email)) {
+        setError('Please provide a legitimate email address (avoid generic or repeating characters).');
+        setLoading(false);
+        return;
+      }
+
       if (password !== confirmPassword) {
         setError('Passwords do not match');
         setLoading(false);
@@ -29,7 +53,7 @@ export default function AuthPage() {
       }
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) setError(error.message);
-      else setSuccess('Account created! Check your email to confirm, then sign in.');
+      else setSuccess('Account created! Please check your inbox to confirm your email.');
     }
     setLoading(false);
   };
