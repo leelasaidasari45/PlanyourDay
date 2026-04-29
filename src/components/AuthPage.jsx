@@ -35,115 +35,111 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-wrapper glass-card">
-        {/* Left Side: Hero Illustration & Marketing */}
-        <div className="auth-hero">
-          <div className="auth-hero-content">
-            <div className="auth-badge">✨ Now live: v2.0</div>
-            <h1>Master Your Time with <br/><span>easyPLANNER</span></h1>
-            <p>The ultimate productivity companion for students and professionals. Track subjects, manage tasks, and build unstoppable streaks.</p>
+    <div className="auth-master-container">
+      {/* Dynamic Background Blobs */}
+      <div className="auth-blob auth-blob-1"></div>
+      <div className="auth-blob auth-blob-2"></div>
+      <div className="auth-blob auth-blob-3"></div>
+
+      <div className="auth-wrapper-v3 glass-card">
+        {/* Left Side: Brand & Hero */}
+        <div className="auth-hero-v3">
+          <div className="auth-hero-top">
+            <div className="auth-brand">
+              <span className="brand-icon">📅</span>
+              <span className="brand-name">easyPLANNER</span>
+            </div>
+            <div className="auth-badge-v3">Version 2.4 ✨</div>
+          </div>
+          
+          <div className="auth-hero-main">
+            <h1>Elevate Your <br/><span>Daily Grind.</span></h1>
+            <p>The smarter way to plan, track, and conquer your goals. Join thousands of users today.</p>
             
-            <div className="auth-features">
-              <div className="feature-item">
-                <span className="feature-icon">🚀</span>
-                <span>Real-time Sync</span>
+            <div className="auth-stats-mini">
+              <div className="mini-stat">
+                <span className="stat-num">50K+</span>
+                <span className="stat-text">Active Users</span>
               </div>
-              <div className="feature-item">
-                <span className="feature-icon">🎯</span>
-                <span>Subject Tracking</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">📸</span>
-                <span>Visual Proof</span>
+              <div className="mini-stat">
+                <span className="stat-num">98%</span>
+                <span className="stat-text">Productivity Boost</span>
               </div>
             </div>
           </div>
-          <div className="auth-hero-image">
-            <img src="/auth-hero.png" alt="easyPLANNER Productivity" />
+
+          <div className="auth-hero-footer">
+            <div className="hero-features-v3">
+              <span>🚀 Fast</span>
+              <span>🔒 Secure</span>
+              <span>📱 Responsive</span>
+            </div>
           </div>
         </div>
 
-        {/* Right Side: Authentication Form */}
-        <div className="auth-form-side">
-          <div className="auth-form-header">
-            <div className="auth-mini-logo">📅</div>
-            <h2>{tab === 'signin' ? 'Welcome Back' : 'Get Started'}</h2>
-            <p>{tab === 'signin' ? 'Enter your details to access your dashboard' : 'Create an account to start planning your success'}</p>
-          </div>
-
-          {/* Tabs */}
-          <div className="auth-tabs">
-            <button className={`auth-tab ${tab === 'signin' ? 'active' : ''}`} onClick={() => { setTab('signin'); setError(''); setSuccess(''); }}>
-              Sign In
-            </button>
-            <button className={`auth-tab ${tab === 'signup' ? 'active' : ''}`} onClick={() => { setTab('signup'); setError(''); setSuccess(''); }}>
-              Sign Up
-            </button>
-          </div>
-
-          <form className="auth-form" onSubmit={handleSubmit}>
-            {error && <div className="auth-error">⚠️ {error}</div>}
-            {success && <div className="auth-success">✅ {success}</div>}
-
-            <div className="form-group">
-              <label className="form-label">Email Address</label>
-              <input
-                className="input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
+        {/* Right Side: Form */}
+        <div className="auth-form-side-v3">
+          <div className="auth-form-inner">
+            <div className="auth-form-header-v3">
+              <h2>{tab === 'signin' ? 'Welcome Back' : 'Create Account'}</h2>
+              <p>{tab === 'signin' ? 'Sign in to your account to continue' : 'Start your productivity journey today'}</p>
             </div>
 
-            <div className="form-group">
-              <label className="form-label">Password</label>
-              <div className="input-with-action">
-                <input
-                  key={tab === 'signin' ? 'signin-pw' : 'signup-pw'}
-                  className="input"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder={tab === 'signup' ? 'Min. 6 characters' : 'Your password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
-                  name={tab === 'signin' ? 'password' : 'new-password'}
-                />
-                <button 
-                  type="button" 
-                  className="input-action-btn"
-                  onClick={() => setShowPassword(!showPassword)}
-                  tabIndex="-1"
-                >
-                  {showPassword ? '🙈' : '👁️'}
-                </button>
-              </div>
+            {/* Premium Tabs */}
+            <div className="auth-tabs-v3">
+              <button 
+                className={`auth-tab-v3 ${tab === 'signin' ? 'active' : ''}`} 
+                onClick={() => { setTab('signin'); setError(''); setSuccess(''); }}
+              >
+                Sign In
+              </button>
+              <button 
+                className={`auth-tab-v3 ${tab === 'signup' ? 'active' : ''}`} 
+                onClick={() => { setTab('signup'); setError(''); setSuccess(''); }}
+              >
+                Join Now
+              </button>
             </div>
 
-            {tab === 'signup' && (
-              <div className="form-group">
-                <label className="form-label">Confirm Password</label>
-                <div className="input-with-action">
+            <form className="auth-form-v3" onSubmit={handleSubmit}>
+              {error && <div className="auth-error-v3">⚠️ {error}</div>}
+              {success && <div className="auth-success-v3">✅ {success}</div>}
+
+              <div className="form-group-v3">
+                <label>Email Address</label>
+                <div className="input-wrapper-v3">
+                  <span className="input-icon">✉️</span>
                   <input
-                    key="signup-confirm-pw"
-                    className="input"
+                    className="input-v3"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group-v3">
+                <label>Password</label>
+                <div className="input-wrapper-v3">
+                  <span className="input-icon">🔑</span>
+                  <input
+                    key={tab === 'signin' ? 'signin-pw' : 'signup-pw'}
+                    className="input-v3"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Confirm your password"
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder={tab === 'signup' ? 'Min. 6 characters' : '••••••••'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    autoComplete="new-password"
-                    name="confirm-password"
+                    autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
+                    name={tab === 'signin' ? 'password' : 'new-password'}
                   />
                   <button 
                     type="button" 
-                    className="input-action-btn"
+                    className="toggle-password-v3"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex="-1"
                   >
@@ -151,31 +147,51 @@ export default function AuthPage() {
                   </button>
                 </div>
               </div>
-            )}
 
-
-
-            <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: '100%', marginTop: 10 }}>
-              {loading ? (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span className="spinner" style={{ width: 18, height: 18, borderWidth: 2 }} />
-                  {tab === 'signin' ? 'Verifying…' : 'Processing…'}
-                </span>
-              ) : (
-                tab === 'signin' ? 'Sign In Now' : 'Create Free Account'
+              {tab === 'signup' && (
+                <div className="form-group-v3">
+                  <label>Confirm Password</label>
+                  <div className="input-wrapper-v3">
+                    <span className="input-icon">🛡️</span>
+                    <input
+                      key="signup-confirm-pw"
+                      className="input-v3"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Repeat password"
+                      value={confirmPassword}
+                      onChange={e => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={6}
+                      autoComplete="new-password"
+                      name="confirm-password"
+                    />
+                  </div>
+                </div>
               )}
-            </button>
 
-            <div className="auth-footer">
-              {tab === 'signin' ? "Don't have an account? " : 'Already have an account? '}
-              <button type="button" className="auth-footer-btn" onClick={() => { setTab(tab === 'signin' ? 'signup' : 'signin'); setError(''); setSuccess(''); }}>
-                {tab === 'signin' ? 'Create Account' : 'Sign In'}
+              <button className="auth-submit-v3" type="submit" disabled={loading}>
+                {loading ? (
+                  <span className="btn-loader"></span>
+                ) : (
+                  tab === 'signin' ? 'Sign In' : 'Sign Up Free'
+                )}
+              </button>
+            </form>
+
+            <div className="auth-switch-v3">
+              {tab === 'signin' ? "New here? " : 'Already a member? '}
+              <button 
+                type="button" 
+                onClick={() => { setTab(tab === 'signin' ? 'signup' : 'signin'); setError(''); setSuccess(''); }}
+              >
+                {tab === 'signin' ? 'Create an account' : 'Sign in here'}
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 
