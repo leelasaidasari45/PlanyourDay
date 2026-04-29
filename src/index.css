@@ -1121,16 +1121,6 @@ select.input option {
     width: 260px;
     transform: translateX(-100%);
     transition: transform var(--transition);
-
-
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  :root { --sidebar-w: 0px; }
-  .sidebar {
-    width: 260px;
-    transform: translateX(-100%);
-    transition: transform var(--transition);
     z-index: 200;
   }
   .sidebar.open { transform: translateX(0); }
@@ -1146,6 +1136,7 @@ select.input option {
   }
   .modal-box { padding: 24px 20px; }
 }
+
 @media (min-width: 769px) {
   .mobile-menu-btn { display: none; }
   .sidebar-overlay { display: none !important; }
