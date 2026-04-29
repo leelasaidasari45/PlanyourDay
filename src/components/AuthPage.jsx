@@ -49,7 +49,6 @@ export default function AuthPage() {
               <span className="brand-icon">📅</span>
               <span className="brand-name">easyPLANNER</span>
             </div>
-            <div className="auth-badge-v3">Version 2.4 ✨</div>
           </div>
           
           <div className="auth-hero-main">
@@ -63,16 +62,8 @@ export default function AuthPage() {
               <div className="feature-pill">🔥 Daily Streaks</div>
             </div>
           </div>
-
-
-          <div className="auth-hero-footer">
-            <div className="hero-features-v3">
-              <span>🚀 Fast</span>
-              <span>🔒 Secure</span>
-              <span>📱 Responsive</span>
-            </div>
-          </div>
         </div>
+
 
         {/* Right Side: Form */}
         <div className="auth-form-side-v3">
