@@ -96,7 +96,6 @@ export default function AuthPage() {
               <div className="form-group-v3">
                 <label>Email Address</label>
                 <div className="input-wrapper-v3">
-                  <span className="input-icon">✉️</span>
                   <input
                     className="input-v3"
                     type="email"
@@ -113,7 +112,6 @@ export default function AuthPage() {
               <div className="form-group-v3">
                 <label>Password</label>
                 <div className="input-wrapper-v3">
-                  <span className="input-icon">🔑</span>
                   <input
                     key={tab === 'signin' ? 'signin-pw' : 'signup-pw'}
                     className="input-v3"
@@ -141,7 +139,6 @@ export default function AuthPage() {
                 <div className="form-group-v3">
                   <label>Confirm Password</label>
                   <div className="input-wrapper-v3">
-                    <span className="input-icon">🛡️</span>
                     <input
                       key="signup-confirm-pw"
                       className="input-v3"
