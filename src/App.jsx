@@ -50,7 +50,6 @@ export default function App() {
         className="btn-icon mobile-menu-btn"
         onClick={() => setSidebarOpen(true)}
         aria-label="Open menu"
-        style={{ position: 'fixed', top: 16, left: 16, zIndex: 300 }}
       >
         ☰
       </button>
