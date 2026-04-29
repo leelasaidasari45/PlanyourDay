@@ -89,7 +89,7 @@ export default function AuthPage() {
               </button>
             </div>
 
-            <form className="auth-form-v3" onSubmit={handleSubmit}>
+            <form className="auth-form-v3" onSubmit={handleSubmit} autoComplete="off">
               {error && <div className="auth-error-v3">⚠️ {error}</div>}
               {success && <div className="auth-success-v3">✅ {success}</div>}
 
@@ -104,7 +104,8 @@ export default function AuthPage() {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     required
-                    autoComplete="email"
+                    autoComplete="off"
+                    name="user_email_unique"
                   />
                 </div>
               </div>
@@ -122,8 +123,8 @@ export default function AuthPage() {
                     onChange={e => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
-                    name={tab === 'signin' ? 'password' : 'new-password'}
+                    autoComplete="new-password"
+                    name={tab === 'signin' ? 'user_pass_signin' : 'user_pass_signup'}
                   />
                   <button 
                     type="button" 
@@ -151,7 +152,7 @@ export default function AuthPage() {
                       required
                       minLength={6}
                       autoComplete="new-password"
-                      name="confirm-password"
+                      name="user_pass_confirm"
                     />
                   </div>
                 </div>
