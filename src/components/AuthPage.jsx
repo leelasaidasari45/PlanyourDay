@@ -54,19 +54,16 @@ export default function AuthPage() {
           
           <div className="auth-hero-main">
             <h1>Elevate Your <br/><span>Daily Grind.</span></h1>
-            <p>The smarter way to plan, track, and conquer your goals. Join thousands of users today.</p>
+            <p>The smarter way to plan, track, and conquer your goals. Organize your studies and professional life in one place.</p>
             
-            <div className="auth-stats-mini">
-              <div className="mini-stat">
-                <span className="stat-num">50K+</span>
-                <span className="stat-text">Active Users</span>
-              </div>
-              <div className="mini-stat">
-                <span className="stat-num">98%</span>
-                <span className="stat-text">Productivity Boost</span>
-              </div>
+            <div className="auth-features-list">
+              <div className="feature-pill">🎯 Task Planning</div>
+              <div className="feature-pill">📚 Subject Tracking</div>
+              <div className="feature-pill">📸 Visual Proofs</div>
+              <div className="feature-pill">🔥 Daily Streaks</div>
             </div>
           </div>
+
 
           <div className="auth-hero-footer">
             <div className="hero-features-v3">
